@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{7E4279A8-2C8A-471D-8368-1833B72BE2AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatingApp", "DatingApp\DatingApp.csproj", "{B50234BC-9BB4-4EA0-B90A-402BEC7B9734}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatingApp.App", "DatingApp\DatingApp.App.csproj", "{B50234BC-9BB4-4EA0-B90A-402BEC7B9734}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
