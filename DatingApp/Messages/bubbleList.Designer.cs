@@ -122,6 +122,7 @@ namespace DatingApp.App.Messages
             // 
             // BubbleList
             // 
+            this.AccessibleName = "mainBubbleList";
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel3);
@@ -132,6 +133,7 @@ namespace DatingApp.App.Messages
             this.Name = "BubbleList";
             this.Padding = new System.Windows.Forms.Padding(20);
             this.Size = new System.Drawing.Size(300, 113);
+            this.Load += new System.EventHandler(this.BubbleList_Load);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.userPicture)).EndInit();
             this.panel2.ResumeLayout(false);

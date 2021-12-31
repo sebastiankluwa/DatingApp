@@ -5,6 +5,7 @@ using Local;
 using Local.Forms;
 using Local.Forms.Account;
 using Local.Managers;
+using Local.Services;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,9 @@ namespace DatingApp
             _container = new Local.Container();
             _container.AccountManager = new AccountManager();
             _container.MessagesManager = new MessagesManager(_container);
+            _container.MessageService = new MessageService(_container);
+            _container.UsersManager = new UsersManager(_container);
+
             //Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 25, 25));
             leftBorderBtn = new Panel();
             leftBorderBtn.Size = new Size(7, 60);
@@ -105,7 +109,7 @@ namespace DatingApp
                 }
             }
 
-            lblUserName.Text = _container.AccountManager.User.Username;
+            lblUserName.Text = _container.AccountManager.User.KnownAs;
         }
 
         private void Form1_Load(object sender, EventArgs e)

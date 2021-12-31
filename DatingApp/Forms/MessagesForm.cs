@@ -3,9 +3,12 @@ using DatingApp.App.Utils;
 using Local;
 using Local.DTOs.Messages;
 using Local.Managers;
+using Local.Messages.Chat;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -21,15 +24,54 @@ namespace DatingApp.App.Forms
         private readonly Local.IContainer _container;
         private HubConnection _connection;
         private List<MessageDto> messages;
+        ObservableCollection<MessageDto> MessagesList { get; set; }
+        private Chatbox _chatBox;
 
 
         public MessagesForm(Local.IContainer container)
         {
             _container = container;
-
+            MessagesList = new ObservableCollection<MessageDto>();
+            MessagesList.CollectionChanged += updateView;
             InitializeComponent();
             connectToInboxMessagesHub();
             this.FormClosing += MessagesForm_Closing;
+            _container.MessageService.MessageThread.CollectionChanged += updateMessageThread;
+        }
+
+        private async void updateMessageThread(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            foreach (MessageDto item in e.NewItems)
+            {
+                var messageSender = await _container.UsersManager.GetUserByUsername(item.SenderUsername);
+
+                var chatModel = new TextChatModel
+                {
+                    Body = item.Content,
+                    Author = messageSender.KnownAs,
+                    Read = item.DateRead != null,
+                    Time = item.MessageSent,
+                    Inbound = _container.AccountManager.User.Username != item.SenderUsername
+                };
+
+                _chatBox.AddMessage(chatModel);
+            }
+        }
+
+        private async void initializeChatBox(string userName)
+        {
+            var sender = await _container.UsersManager.GetUserByUsername(userName);
+
+            ChatboxInfo chatboxInfo = new ChatboxInfo();
+            chatboxInfo.OtherUsername = userName;
+            chatboxInfo.NamePlaceholder = sender.KnownAs;
+            chatboxInfo.PhonePlaceholder = "";
+            chatboxInfo.User = _container.AccountManager.User.KnownAs;
+
+            _chatBox = new Chatbox(chatboxInfo, _container);
+            _chatBox.Name = "chat_panel";
+            _chatBox.Dock = DockStyle.Fill;
+            panelMessageChat.Controls.Add(_chatBox);
         }
 
         private void MessagesForm_Closing(Object sender, FormClosingEventArgs e)
@@ -49,20 +91,20 @@ namespace DatingApp.App.Forms
 
             _connection.On<List<MessageDto>>("ReceiveInboxMessages", (messages) =>
             {
-                this.messages = messages;
-                this.messages.OrderByDescending(p => p.MessageSent);
+                var tempList = messages;
+                tempList.OrderByDescending(p => p.MessageSent);
 
-                updateView();
+                foreach (var message in tempList)
+                {
+                    MessagesList.Add(message);
+                }
             });
 
             _connection.On<MessageDto>("NewInboxMessage", (message) =>
             {
-                var oldMessage = this.messages.FirstOrDefault(p => p.SenderId == message.SenderId);
-                this.messages.Remove(oldMessage);
-                this.messages.Add(message);
-                this.messages.Sort((a, b) => b.MessageSent.CompareTo(a.MessageSent));
-
-                updateView();
+                var oldMessage = MessagesList.FirstOrDefault(p => p.SenderId == message.SenderId);
+                MessagesList.Remove(oldMessage);
+                MessagesList.Add(message);
             });
 
             try
@@ -75,7 +117,7 @@ namespace DatingApp.App.Forms
             }
         }
 
-        private async void updateView()
+        private async void updateView(object sender, NotifyCollectionChangedEventArgs e)
         {
             flowMessageList.Controls.Clear();
             if (isAnyMessage())
@@ -88,11 +130,25 @@ namespace DatingApp.App.Forms
 
         private async void loadInboxMessagesList(int pageNumber = 1, int pageSize = 10)
         {
-            foreach (var message in this.messages)
+            foreach (var message in MessagesList)
             {
-                var bubbleList = new BubbleList(message.SenderUsername, message.Content, message.MessageSent);
+                var otherUsername = message.RecipientUsername == _container.AccountManager.User.Username
+                    ? message.SenderUsername
+                    : message.RecipientUsername;
+
+                var otherUser = await _container.UsersManager.GetUserByUsername(otherUsername);
+
+                var bubbleList = new BubbleList(otherUsername, otherUser.KnownAs, message.Content, message.MessageSent);
                 bubbleList.DefaultBackColor = flowMessageList.BackColor;
                 bubbleList.Width = flowMessageList.Width;
+                bubbleList.MouseClick += BubbleList_MouseClick;
+                bubbleList.AccessibleName = otherUsername;
+                foreach (Control control in bubbleList.Controls)
+                {
+                    control.MouseClick += BubbleList_MouseClick;
+                    control.AccessibleName = otherUsername;
+                }
+
                 var width = bubbleList.Width;
 
                 flowMessageList.Controls.Add(bubbleList);
@@ -100,9 +156,22 @@ namespace DatingApp.App.Forms
             }
         }
 
+        private void BubbleList_MouseClick(object sender, MouseEventArgs e)
+        {
+            var username = ((System.Windows.Forms.Control)sender).AccessibleName;
+            if (_container.MessageService.IsConnectionToMessageHub())
+            {
+                _container.MessageService.DisconnectFromMessageHub();
+                panelMessageChat.Controls.Clear();
+            }
+
+            _container.MessageService.ConnectToMessageHub(username);
+            initializeChatBox(username);
+        }
+
         private bool isAnyMessage()
         {
-            return this.messages.Any();
+            return MessagesList.Any();
         }
     }
 }

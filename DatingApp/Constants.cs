@@ -17,6 +17,7 @@ namespace Local
             {
                 public const string Login = "/account/login";
                 public const string Register = "/account/register";
+                public const string Users = "/users";
                 public const string Messages = "/messages";
             }
 

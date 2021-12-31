@@ -32,7 +32,7 @@ namespace Local.Forms.Account
                 City = txtCity.Text,
                 Country = txtCountry.Text,
                 DateOfBirth = datePickerDateOfBirth.Value,
-                Gender = radioBtnMale.Checked ? "Male" : "Female",
+                Gender = radioBtnMale.Checked ? "male" : "female",
                 KnownAs = txtKnownAs.Text
             };
 
@@ -46,33 +46,6 @@ namespace Local.Forms.Account
                 txtUsername.Focus();
             }
             this.DialogResult = DialogResult.OK;
-            //if (txtUsername.Text == "" && txtPassword.Text == "" && txtComPassword.Text == "")
-            //{
-            //    MessageBox.Show("Username and Password fields are empty", "Registration Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            //}
-            //else if (txtPassword.Text == txtComPassword.Text)
-            //{
-            //    con.Open();
-            //    string register = "INSERT INTO tbl_users VALUES ('" + txtUsername.Text + "','" + txtPassword.Text + "')";
-            //    cmd = new OleDbCommand(register, con);
-            //    cmd.ExecuteNonQuery();
-            //    con.Close();
-
-            //    txtUsername.Text = "";
-            //    txtPassword.Text = "";
-            //    txtComPassword.Text = "";
-
-            //    MessageBox.Show("Your Account has been Successfully Created", "Registration Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Passwords does not match, Please Re-enter", "Registration Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    txtPassword.Text = "";
-            //    txtComPassword.Text = "";
-            //    txtPassword.Focus();
-            //}
         }
 
         private void checkbxShowPas_CheckedChanged(object sender, EventArgs e)

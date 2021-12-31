@@ -1,4 +1,5 @@
-﻿using Local.Forms;
+﻿using Local.DTOs.Messages;
+using Local.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,15 +28,19 @@ namespace DatingApp.App.Messages
             }
         }
 
+        public string Username { get; set; }
+        public string KnownAs{ get; set; }
+
         public BubbleList()
         {
             InitializeComponent();
         }
 
-        public BubbleList(string username, string message, DateTime dateSent)
+        public BubbleList(string username, string knownAs, string message, DateTime dateSent)
         {
             InitializeComponent();
-            lblUsername.Text = username;
+            Username = username;
+            lblUsername.Text = knownAs;
             lblText.Text = message;
             lblTimeSent.Text = dateSent.ToString("hh:mm tt");
         }
@@ -53,6 +58,11 @@ namespace DatingApp.App.Messages
         private void BubbleListMouseHover(object sender, EventArgs e)
         {
             this.BackColor = ControlPaint.Light(this.DefaultBackColor);
+
+        }
+
+        private void BubbleList_Load(object sender, EventArgs e)
+        {
 
         }
     }

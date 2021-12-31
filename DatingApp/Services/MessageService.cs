@@ -1,7 +1,10 @@
 ﻿using DatingApp.App;
+using Local.DTOs;
+using Local.DTOs.Messages;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,46 +13,52 @@ namespace Local.Services
 {
     public interface IMessageService
     {
-        void ConnectToMessageHub();
+        void ConnectToMessageHub(string otherUsername);
+        void DisconnectFromMessageHub();
+        ObservableCollection<MessageDto> MessageThread { get; set; }
+        bool IsConnectionToMessageHub();
+        void SendMessage(string recipientUsername, string content);
     }
 
     public class MessageService : IMessageService
     {
+        public ObservableCollection<MessageDto> MessageThread { get; set; }
         private readonly IContainer _container;
         private HubConnection _messageHubConnection;
 
         public MessageService(IContainer container)
         {
             _container = container;
+            MessageThread = new ObservableCollection<MessageDto>();
         }
 
-        public async void ConnectToMessageHub()
+        public async void ConnectToMessageHub(string otherUsername)
         {
+            var url = new Uri(Constants.Api.HubUrl 
+                + Constants.Api.HubRoutePaths.MessageHub 
+                + "?user=" + otherUsername);
+
             _messageHubConnection = new HubConnectionBuilder()
-            .WithUrl(new Uri(Constants.Api.HubUrl + Constants.Api.HubRoutePaths.InboxMessagesHub), opt =>
+            .WithUrl(url, opt =>
             {
                 opt.AccessTokenProvider = () => Task.FromResult(_container.AccountManager.User.Token);
             })
             .WithAutomaticReconnect()
             .Build();
 
-            //_messageHubConnection.On<List<MessageDto>>("ReceiveInboxMessages", (messages) =>
-            //{
-            //    this.messages = messages;
-            //    this.messages.OrderByDescending(p => p.MessageSent);
+            _messageHubConnection.On<IEnumerable<MessageDto>>("ReceiveMessageThread", (messages) =>
+            {
+                foreach (var message in messages)
+                {
+                    MessageThread.Add(message);
+                }
+            });
 
-            //    updateView();
-            //});
+            _messageHubConnection.On<MessageDto>("NewMessage", (message) =>
+            {
+                MessageThread.Add(message);
+            });
 
-            //_messageHubConnection.On<MessageDto>("NewInboxMessage", (message) =>
-            //{
-            //    var oldMessage = this.messages.FirstOrDefault(p => p.SenderId == message.SenderId);
-            //    this.messages.Remove(oldMessage);
-            //    this.messages.Add(message);
-            //    this.messages.Sort((a, b) => b.MessageSent.CompareTo(a.MessageSent));
-
-            //    updateView();
-            //});
 
             try
             {
@@ -59,6 +68,27 @@ namespace Local.Services
             {
                 throw;
             }
+        }
+
+        public async void SendMessage(string recipientUsername, string content)
+        {
+            var createMessageDto = new CreateMessageDto
+            {
+                RecipientUsername = recipientUsername,
+                Content = content
+            };
+
+            await _messageHubConnection.InvokeAsync("SendMessage", createMessageDto);
+        }
+
+        public async void DisconnectFromMessageHub()
+        {
+            await _messageHubConnection.StopAsync();
+        }
+
+        public bool IsConnectionToMessageHub()
+        {
+            return _messageHubConnection != null;
         }
     }
 }

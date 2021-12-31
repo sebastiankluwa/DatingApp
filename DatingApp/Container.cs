@@ -14,6 +14,7 @@ namespace Local
         IAccountManager AccountManager { get; set; }
         IMessageService MessageService { get; set; }
         IMessagesManager MessagesManager { get; set; }
+        IUsersManager UsersManager { get; set; }
     }
 
     public class Container : IContainer
@@ -21,5 +22,6 @@ namespace Local
         public IAccountManager AccountManager { get; set; }
         public IMessagesManager MessagesManager { get; set; }
         public IMessageService MessageService { get; set; }
+        public IUsersManager UsersManager { get; set; }
     }
 }

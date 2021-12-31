@@ -20,8 +20,6 @@ namespace Local.Managers
     public class MessagesManager : IMessagesManager
     {
         private readonly IContainer _container;
-        private HubConnection _messageConnection;
-
 
         public MessagesManager(IContainer container)
         {
@@ -43,15 +41,7 @@ namespace Local.Managers
             return messages;
         }
 
-        public void EnterMessageThread(string userName)
-        {
+        
 
-          
-        }
-
-        public void LeaveMessageThread(string userName)
-        {
-           
-        }
     }
 }

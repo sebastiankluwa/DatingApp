@@ -91,12 +91,15 @@ namespace API.Data
         {
             var sql = @"SELECT *
                         FROM ""Messages"" AS MESS1
-                        WHERE ""RecipientUsername"" = {0}
+                        WHERE (""RecipientUsername"" = {0} OR ""SenderUsername"" = {0})
                             AND ""RecipientDeleted"" = FALSE
                             AND ""MessageSent"" =
                                 (SELECT MAX(""MessageSent"")
                                     FROM ""Messages"" MESS2
-                                    WHERE MESS1.""SenderId"" = MESS2.""SenderId"")
+                                    WHERE(MESS1.""SenderId"" = MESS2.""SenderId""
+                                    AND MESS1.""RecipientId"" = MESS2.""RecipientId"")
+                                    OR(MESS1.""SenderId"" = MESS2.""RecipientId""
+                                    AND MESS1.""RecipientId"" = MESS2.""SenderId""))
                         ORDER BY ""MessageSent"" DESC";
 
             var messages = _context.Messages.FromSqlRaw(sql, userName)
