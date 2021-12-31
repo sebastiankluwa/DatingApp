@@ -12,11 +12,10 @@ namespace DatingApp.App.Utils
 {
     public partial class Divider : UserControl
     {
-        public Divider(Color color, DockStyle dockStyle, Size size)
+        public Divider(Color color, Size size)
         {
             InitializeComponent();
             Size = size;
-            Dock = dockStyle;
             BackColor = color;
         }
 

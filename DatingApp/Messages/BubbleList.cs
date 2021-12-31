@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Local.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,20 @@ namespace DatingApp.App.Messages
 {
     public partial class BubbleList : UserControl
     {
+        Color _defaultBackColor;
+
+        public Color DefaultBackColor {
+            get 
+            { 
+                return _defaultBackColor; 
+            }
+            set 
+            {
+                _defaultBackColor = value;
+                this.BackColor = value;
+            }
+        }
+
         public BubbleList()
         {
             InitializeComponent();
@@ -25,8 +40,19 @@ namespace DatingApp.App.Messages
             lblTimeSent.Text = dateSent.ToString("hh:mm tt");
         }
 
-        private void bubble_Load(object sender, EventArgs e)
+        private void BubbleListMouseLeave(object sender, EventArgs e)
         {
+            this.BackColor = this.DefaultBackColor;
+        }
+
+        private void BubbleListMouseEnter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BubbleListMouseHover(object sender, EventArgs e)
+        {
+            this.BackColor = ControlPaint.Light(this.DefaultBackColor);
 
         }
     }

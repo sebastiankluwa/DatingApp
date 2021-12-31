@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DatingApp.App.DTOs
+namespace Local.DTOs
 {
     public class LoginDto
     {

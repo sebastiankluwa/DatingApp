@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
@@ -74,7 +75,7 @@ namespace API.Data
 
             query = messageParams.Container switch
             {
-                "Inbox" => query.Where(u => u.RecipientUsername == messageParams.Username 
+                "Inbox" => query.Where(u => u.RecipientUsername == messageParams.Username
                     && u.RecipientDeleted == false),
                 "Outbox" => query.Where(u => u.SenderUsername == messageParams.Username
                     && u.SenderDeleted == false),
@@ -84,6 +85,25 @@ namespace API.Data
 
             return await PagedList<MessageDto>.CreateAsync(query, messageParams.PageNumber, messageParams.PageSize);
 
+        }
+
+        public async Task<List<MessageDto>> GetInboxMessagesForUser(string userName)
+        {
+            var sql = @"SELECT *
+                        FROM ""Messages"" AS MESS1
+                        WHERE ""RecipientUsername"" = {0}
+                            AND ""RecipientDeleted"" = FALSE
+                            AND ""MessageSent"" =
+                                (SELECT MAX(""MessageSent"")
+                                    FROM ""Messages"" MESS2
+                                    WHERE MESS1.""SenderId"" = MESS2.""SenderId"")
+                        ORDER BY ""MessageSent"" DESC";
+
+            var messages = _context.Messages.FromSqlRaw(sql, userName)
+                .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
+                .ToList();
+
+            return messages;
         }
 
         public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUsername, 

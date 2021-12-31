@@ -1,5 +1,11 @@
-﻿using DatingApp.App.Forms;
+﻿using DatingApp.App;
+using DatingApp.App.Forms;
 using FontAwesome.Sharp;
+using Local;
+using Local.Forms;
+using Local.Forms.Account;
+using Local.Managers;
+using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +25,7 @@ namespace DatingApp
         private IconButton currentBtn;
         private Panel leftBorderBtn;
         private Form currentChildForm;
+        private Local.IContainer _container;
 
         //[DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         //private static extern IntPtr CreateRoundRectRgn
@@ -34,6 +41,9 @@ namespace DatingApp
         public Form1()
         {
             InitializeComponent();
+            _container = new Local.Container();
+            _container.AccountManager = new AccountManager();
+            _container.MessagesManager = new MessagesManager(_container);
             //Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 25, 25));
             leftBorderBtn = new Panel();
             leftBorderBtn.Size = new Size(7, 60);
@@ -43,10 +53,64 @@ namespace DatingApp
             this.ControlBox = false;
             this.DoubleBuffered = true;
             this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+
+        }
+
+        public void LoginUser()
+        {
+            var isSignedIn = false;
+            var isSigningIn = true;
+
+            var loginForm = new LoginForm(_container);
+            var registerForm = new frmRegister(_container);
+            DialogResult dialogResult;
+
+            while(!isSignedIn)
+            {
+                if(isSigningIn)
+                {
+                    dialogResult = loginForm.ShowDialog();
+                    switch (dialogResult)
+                    {
+                        case DialogResult.OK:
+                            isSignedIn = true;
+                            break;
+                        case DialogResult.No:
+                            isSigningIn = false;
+                            break;
+                        case DialogResult.Cancel:
+                            Application.Exit();
+                            return;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    dialogResult = registerForm.ShowDialog();
+                    switch (dialogResult)
+                    {
+                        case DialogResult.OK:
+                            isSigningIn = true;
+                            break;
+                        case DialogResult.No:
+                            isSigningIn = true;
+                            break;
+                        case DialogResult.Cancel:
+                            Application.Exit();
+                            return;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            lblUserName.Text = _container.AccountManager.User.Username;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            LoginUser();
 
         }
 
@@ -148,7 +212,7 @@ namespace DatingApp
 
         private void btnMessages_Click(object sender, EventArgs e)
         {
-            var messagesForm = new MessagesForm();
+            var messagesForm = new MessagesForm(_container);
             ActivateButton(sender, RGBColors.color3);
             OpenChildForm(messagesForm);
         }
@@ -202,6 +266,14 @@ namespace DatingApp
             WindowState = FormWindowState.Minimized;
         }
 
-        
+        private void logoutButton_Click(object sender, EventArgs e)
+        {
+            var plexiglass = new Plexiglass(this);
+            plexiglass.Opacity = 0.5;
+
+            _container.AccountManager.LogOut();
+            this.LoginUser();
+            plexiglass.Close();
+        }
     }
 }

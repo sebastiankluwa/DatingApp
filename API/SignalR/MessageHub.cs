@@ -15,12 +15,14 @@ namespace API.SignalR
         private readonly IMapper _mapper;
         private readonly IHubContext<PresenceHub> _presenceHub;
         private readonly PresenceTracker _tracker;
+        private readonly IHubContext<MessageInboxHub> _messageInboxHub;
         private readonly IUnitOfWork _unitOfWork;
         public MessageHub(IMapper mapper, IUnitOfWork unitOfWork, IHubContext<PresenceHub> presenceHub,
-            PresenceTracker tracker)
+            PresenceTracker tracker, IHubContext<MessageInboxHub> messageInboxHub)
         {
             _unitOfWork = unitOfWork;
             _tracker = tracker;
+            _messageInboxHub = messageInboxHub;
             _presenceHub = presenceHub;
             _mapper = mapper;
         }
@@ -93,6 +95,7 @@ namespace API.SignalR
             if (await _unitOfWork.Complete())
             {
                 await Clients.Group(groupName).SendAsync("NewMessage", _mapper.Map<MessageDto>(message));
+                await _messageInboxHub.Clients.Group(createMessageDto.RecipientUsername).SendAsync("NewInboxMessage", _mapper.Map<MessageDto>(message));
             }
         }
 

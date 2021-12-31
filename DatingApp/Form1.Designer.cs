@@ -31,7 +31,7 @@ namespace DatingApp
         {
             this.button1 = new System.Windows.Forms.Button();
             this.panelMenu = new System.Windows.Forms.Panel();
-            this.iconButton1 = new FontAwesome.Sharp.IconButton();
+            this.logoutButton = new FontAwesome.Sharp.IconButton();
             this.btnProfile = new FontAwesome.Sharp.IconButton();
             this.btnMessages = new FontAwesome.Sharp.IconButton();
             this.btnLists = new FontAwesome.Sharp.IconButton();
@@ -79,7 +79,7 @@ namespace DatingApp
             // panelMenu
             // 
             this.panelMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(9)))), ((int)(((byte)(132)))), ((int)(((byte)(70)))));
-            this.panelMenu.Controls.Add(this.iconButton1);
+            this.panelMenu.Controls.Add(this.logoutButton);
             this.panelMenu.Controls.Add(this.btnProfile);
             this.panelMenu.Controls.Add(this.btnMessages);
             this.panelMenu.Controls.Add(this.btnLists);
@@ -91,27 +91,28 @@ namespace DatingApp
             this.panelMenu.Size = new System.Drawing.Size(220, 611);
             this.panelMenu.TabIndex = 1;
             // 
-            // iconButton1
+            // logoutButton
             // 
-            this.iconButton1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.iconButton1.FlatAppearance.BorderSize = 0;
-            this.iconButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.iconButton1.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.iconButton1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.iconButton1.IconChar = FontAwesome.Sharp.IconChar.PowerOff;
-            this.iconButton1.IconColor = System.Drawing.Color.White;
-            this.iconButton1.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconButton1.IconSize = 32;
-            this.iconButton1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.iconButton1.Location = new System.Drawing.Point(0, 551);
-            this.iconButton1.Name = "iconButton1";
-            this.iconButton1.Padding = new System.Windows.Forms.Padding(10, 0, 20, 0);
-            this.iconButton1.Size = new System.Drawing.Size(220, 60);
-            this.iconButton1.TabIndex = 5;
-            this.iconButton1.Text = "Log Out";
-            this.iconButton1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.iconButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.iconButton1.UseVisualStyleBackColor = true;
+            this.logoutButton.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.logoutButton.FlatAppearance.BorderSize = 0;
+            this.logoutButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.logoutButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.logoutButton.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.logoutButton.IconChar = FontAwesome.Sharp.IconChar.PowerOff;
+            this.logoutButton.IconColor = System.Drawing.Color.White;
+            this.logoutButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.logoutButton.IconSize = 32;
+            this.logoutButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.logoutButton.Location = new System.Drawing.Point(0, 551);
+            this.logoutButton.Name = "logoutButton";
+            this.logoutButton.Padding = new System.Windows.Forms.Padding(10, 0, 20, 0);
+            this.logoutButton.Size = new System.Drawing.Size(220, 60);
+            this.logoutButton.TabIndex = 5;
+            this.logoutButton.Text = "Log Out";
+            this.logoutButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.logoutButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.logoutButton.UseVisualStyleBackColor = true;
+            this.logoutButton.Click += new System.EventHandler(this.logoutButton_Click);
             // 
             // btnProfile
             // 
@@ -240,13 +241,12 @@ namespace DatingApp
             // 
             // lblUserName
             // 
-            this.lblUserName.AutoSize = true;
             this.lblUserName.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblUserName.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblUserName.Location = new System.Drawing.Point(66, 80);
+            this.lblUserName.Location = new System.Drawing.Point(39, 75);
             this.lblUserName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(94, 21);
+            this.lblUserName.Size = new System.Drawing.Size(150, 21);
             this.lblUserName.TabIndex = 0;
             this.lblUserName.Text = "User Name";
             this.lblUserName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -425,7 +425,6 @@ namespace DatingApp
             this.panelMenu.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.userPicture)).EndInit();
             this.panelTitleBar.ResumeLayout(false);
             this.panelTitleBar.PerformLayout();
@@ -461,6 +460,7 @@ namespace DatingApp
         private System.Windows.Forms.Label lblUserName;
         private FontAwesome.Sharp.IconButton btnProfile;
         private FontAwesome.Sharp.IconButton iconButton1;
+        private FontAwesome.Sharp.IconButton logoutButton;
     }
 }
 

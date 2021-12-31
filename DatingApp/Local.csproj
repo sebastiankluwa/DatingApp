@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ComponentFactory.Krypton.Toolkit" Version="1.0.0" />
     <PackageReference Include="FontAwesome.Sharp" Version="5.15.3" />
     <PackageReference Include="MaterialSkin" Version="0.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>

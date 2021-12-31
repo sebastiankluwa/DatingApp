@@ -35,6 +35,7 @@ namespace DatingApp.App.Utils
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "Divider";
             this.Load += new System.EventHandler(this.Divider_Load);
             this.ResumeLayout(false);
