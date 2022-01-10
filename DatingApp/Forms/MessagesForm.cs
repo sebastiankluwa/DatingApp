@@ -121,14 +121,14 @@ namespace DatingApp.App.Forms
         {
             flowMessageList.Controls.Clear();
             if (isAnyMessage())
-                loadInboxMessagesList();
+                await loadInboxMessagesList();
 
             panelMessageList.Visible = isAnyMessage();
             lblNoMessages.Visible = !isAnyMessage();
             iconChatMessages.Visible = !isAnyMessage();
         }
 
-        private async void loadInboxMessagesList(int pageNumber = 1, int pageSize = 10)
+        private async Task<bool> loadInboxMessagesList(int pageNumber = 1, int pageSize = 10)
         {
             foreach (var message in MessagesList)
             {
@@ -154,6 +154,7 @@ namespace DatingApp.App.Forms
                 flowMessageList.Controls.Add(bubbleList);
                 flowMessageList.Controls.Add(new Divider(Color.LightGray, new Size(width, 1)));
             }
+            return true;
         }
 
         private void BubbleList_MouseClick(object sender, MouseEventArgs e)
