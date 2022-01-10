@@ -39,9 +39,11 @@ namespace Local.Messages.Chat
             this.attachButton = new System.Windows.Forms.Button();
             this.removeButton = new System.Windows.Forms.Button();
             this.sendButton = new System.Windows.Forms.Button();
-            this.itemsPanel = new System.Windows.Forms.Panel();
+            this.itemsPanel2 = new System.Windows.Forms.Panel();
+            this.itemsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.topPanel.SuspendLayout();
             this.bottomPanel.SuspendLayout();
+            this.itemsPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // topPanel
@@ -172,22 +174,34 @@ namespace Local.Messages.Chat
             this.sendButton.Text = "Send";
             this.sendButton.UseVisualStyleBackColor = false;
             // 
+            // itemsPanel2
+            // 
+            this.itemsPanel2.AutoScroll = true;
+            this.itemsPanel2.Controls.Add(this.itemsPanel);
+            this.itemsPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.itemsPanel2.Location = new System.Drawing.Point(0, 89);
+            this.itemsPanel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.itemsPanel2.Name = "itemsPanel2";
+            this.itemsPanel2.Size = new System.Drawing.Size(479, 544);
+            this.itemsPanel2.TabIndex = 2;
+            // 
             // itemsPanel
             // 
             this.itemsPanel.AutoScroll = true;
             this.itemsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.itemsPanel.Location = new System.Drawing.Point(0, 89);
-            this.itemsPanel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.itemsPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.itemsPanel.Location = new System.Drawing.Point(0, 0);
             this.itemsPanel.Name = "itemsPanel";
             this.itemsPanel.Size = new System.Drawing.Size(479, 544);
-            this.itemsPanel.TabIndex = 2;
+            this.itemsPanel.TabIndex = 0;
+            this.itemsPanel.WrapContents = false;
             // 
             // Chatbox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.itemsPanel);
+            this.Controls.Add(this.itemsPanel2);
             this.Controls.Add(this.bottomPanel);
             this.Controls.Add(this.topPanel);
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -197,6 +211,7 @@ namespace Local.Messages.Chat
             this.topPanel.PerformLayout();
             this.bottomPanel.ResumeLayout(false);
             this.bottomPanel.PerformLayout();
+            this.itemsPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -212,6 +227,7 @@ namespace Local.Messages.Chat
         private System.Windows.Forms.Button attachButton;
         private System.Windows.Forms.Button removeButton;
         private System.Windows.Forms.TextBox chatTextbox;
-        private System.Windows.Forms.Panel itemsPanel;
+        private System.Windows.Forms.Panel itemsPanel2;
+        private System.Windows.Forms.FlowLayoutPanel itemsPanel;
     }
 }

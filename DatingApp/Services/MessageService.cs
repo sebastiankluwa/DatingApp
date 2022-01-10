@@ -16,6 +16,8 @@ namespace Local.Services
         void ConnectToMessageHub(string otherUsername);
         void DisconnectFromMessageHub();
         ObservableCollection<MessageDto> MessageThread { get; set; }
+        public List<MessageDto> Messages { get; set; }
+
         bool IsConnectionToMessageHub();
         void SendMessage(string recipientUsername, string content);
     }
@@ -23,6 +25,7 @@ namespace Local.Services
     public class MessageService : IMessageService
     {
         public ObservableCollection<MessageDto> MessageThread { get; set; }
+        public List<MessageDto> Messages { get; set; }
         private readonly IContainer _container;
         private HubConnection _messageHubConnection;
 
@@ -30,24 +33,25 @@ namespace Local.Services
         {
             _container = container;
             MessageThread = new ObservableCollection<MessageDto>();
+            Messages = new List<MessageDto>();
         }
 
         public async void ConnectToMessageHub(string otherUsername)
         {
-            var url = new Uri(Constants.Api.HubUrl 
-                + Constants.Api.HubRoutePaths.MessageHub 
-                + "?user=" + otherUsername);
+            var url = new Uri(Constants.Api.HubUrl
+                              + Constants.Api.HubRoutePaths.MessageHub
+                              + "?user=" + otherUsername);
 
             _messageHubConnection = new HubConnectionBuilder()
-            .WithUrl(url, opt =>
-            {
-                opt.AccessTokenProvider = () => Task.FromResult(_container.AccountManager.User.Token);
-            })
-            .WithAutomaticReconnect()
-            .Build();
+                .WithUrl(url,
+                    opt => { opt.AccessTokenProvider = () => Task.FromResult(_container.AccountManager.User.Token); })
+                .WithAutomaticReconnect()
+                .Build();
 
             _messageHubConnection.On<IEnumerable<MessageDto>>("ReceiveMessageThread", (messages) =>
             {
+                Messages.AddRange(messages);
+
                 foreach (var message in messages)
                 {
                     MessageThread.Add(message);

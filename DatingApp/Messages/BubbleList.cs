@@ -31,18 +31,23 @@ namespace DatingApp.App.Messages
         public string Username { get; set; }
         public string KnownAs{ get; set; }
 
+        public string Message { get; set; }
+        public MessageDto MessageDto { get; set; }
+
         public BubbleList()
         {
             InitializeComponent();
         }
 
-        public BubbleList(string username, string knownAs, string message, DateTime dateSent)
+        public BubbleList(string username, string knownAs, string message, DateTime dateSent, MessageDto? messageDto)
         {
             InitializeComponent();
             Username = username;
             lblUsername.Text = knownAs;
             lblText.Text = message;
+            Message = message;
             lblTimeSent.Text = dateSent.ToString("hh:mm tt");
+            MessageDto = messageDto;
         }
 
         private void BubbleListMouseLeave(object sender, EventArgs e)

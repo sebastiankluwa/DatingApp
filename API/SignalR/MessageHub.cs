@@ -96,6 +96,7 @@ namespace API.SignalR
             {
                 await Clients.Group(groupName).SendAsync("NewMessage", _mapper.Map<MessageDto>(message));
                 await _messageInboxHub.Clients.Group(createMessageDto.RecipientUsername).SendAsync("NewInboxMessage", _mapper.Map<MessageDto>(message));
+                await _messageInboxHub.Clients.Group(username).SendAsync("NewInboxMessage", _mapper.Map<MessageDto>(message));
             }
         }
 

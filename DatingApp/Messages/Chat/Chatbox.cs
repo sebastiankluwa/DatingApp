@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Local.DTOs.Messages;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,6 +18,7 @@ namespace Local.Messages.Chat
         private readonly IContainer _container;
         public OpenFileDialog fileDialog = new OpenFileDialog();
         public string initialdirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        public List<MessageDto> Messages { get; set; }
 
         public Chatbox(ChatboxInfo _chatbox_info, IContainer container)
         {
@@ -36,6 +38,8 @@ namespace Local.Messages.Chat
             removeButton.Click += CancelAttachment;
 
             chatTextbox.KeyDown += OnEnter;
+
+            Messages = new List<MessageDto>();
         }
 
         /// <summary>
@@ -43,17 +47,62 @@ namespace Local.Messages.Chat
         /// I've thought about it being editable from outside, but there's no real need to.
         /// </summary>
         /// <param name="message"></param>
-        public void AddMessage(IChatModel message)
+        public void AddMessage(IChatModel message, MessageDto messageDto)
         {
-            var chatItem = new ChatItem(message);
-            chatItem.Name = "chatItem" + itemsPanel.Controls.Count;
-            chatItem.Dock = DockStyle.Top;
-            itemsPanel.Controls.Add(chatItem);
-            chatItem.BringToFront();
+            if(!Messages.Contains(messageDto))
+            {
+                Messages.Add(messageDto);
 
-            chatItem.ResizeBubbles((int)(itemsPanel.Width * 0.6));
+                var chatItem = new ChatItem(message);
+                //chatItem.Name = "chatItem" + itemsPanel.Controls.Count;
+                chatItem.Name = "chatItem" + messageDto.Id;
+                //chatItem.Dock = DockStyle.Top;
+                chatItem.Width = (int)(itemsPanel.Width - 25);
 
-            itemsPanel.ScrollControlIntoView(chatItem);
+                itemsPanel.Controls.Add(chatItem);
+
+                chatItem.BringToFront();
+                chatItem.ResizeBubbles((int)(itemsPanel.Width * 0.6));
+
+                SortControlsByOrderedMessageList(itemsPanel.Controls);
+
+                var control = itemsPanel.Controls[GetLastItemIndex(itemsPanel.Controls)];
+
+                itemsPanel.ScrollControlIntoView(control);
+            }
+        }
+
+        public bool RemoveMessage(MessageDto message)
+        {
+            if (!Messages.Remove(message))
+                return false;
+
+            var control = itemsPanel.Controls.Find("chatItem" + message.Id, true).FirstOrDefault();
+            itemsPanel.Controls.Remove(control);
+
+            return true;
+        }
+
+        public void ClearMessages()
+        {
+            Messages.Clear();
+            itemsPanel.Controls.Clear();
+        }
+
+        private int GetLastItemIndex(ControlCollection controls)
+        {
+            return controls.Count - 1;
+        }
+
+        private void SortControlsByOrderedMessageList(ControlCollection controls)
+        {
+            var messages = Messages.OrderBy(x => x.MessageSent).ToList();
+            foreach (var message in messages.Select((value, i) => (value, i)))
+            {
+                var controlName = "chatItem" + message.value.Id;
+                var control = controls.Find(controlName, true).First();
+                controls.SetChildIndex(control, message.i);
+            }
         }
 
         //Improves the chat UI slightly by having a placeholder text. Note that this is implemented because Winforms doesn't have a native "placeholder" UI. Can be buggy.
@@ -79,87 +128,8 @@ namespace Local.Messages.Chat
         //Cross-tested this with the Twilio API and the RingCentral API, and async messaging is the way to go.
         async void SendMessage(object sender, EventArgs e)
         {
-            //string tonumber = phoneLabel.Text;
             string chatmessage = chatTextbox.Text;
 
-            //IChatModel chatModel = null;
-            //TextChatModel textModel = null;
-
-            ////Each IChatModel is specifically built for a single purpose. For that reason, if you want to display a text item AND and image, you'd make two IChatModels for
-            ////their respective purposes. AttachmentChatModel and ImageChatModel, however, can really be used interchangeably.
-            //if (chatbox_info.Attachment != null && chatbox_info.AttachmentType.Contains("image"))
-            //{
-            //    chatModel = new ImageChatModel()
-            //    {
-            //        Author = chatbox_info.User,
-            //        Image = Image.FromStream(new MemoryStream(chatbox_info.Attachment)),
-            //        ImageName = chatbox_info.AttachmentName,
-            //        Inbound = false,
-            //        Read = true,
-            //        Time = DateTime.Now,
-            //    };
-
-            //}
-            //else if (chatbox_info.Attachment != null)
-            //{
-            //    chatModel = new AttachmentChatModel()
-            //    {
-            //        Author = chatbox_info.User,
-            //        Attachment = chatbox_info.Attachment,
-            //        Filename = chatbox_info.AttachmentName,
-            //        Read = true,
-            //        Inbound = false,
-            //        Time = DateTime.Now
-            //    };
-            //}
-
-            //if (!string.IsNullOrWhiteSpace(chatmessage) && chatmessage != chatbox_info.ChatPlaceholder)
-            //{
-            //    textModel = new TextChatModel()
-            //    {
-            //        Author = chatbox_info.User,
-            //        Body = chatmessage,
-            //        Inbound = false,
-            //        Read = true,
-            //        Time = DateTime.Now
-            //    };
-            //}
-
-            //try
-            //{
-            //    /*
-
-            //        INSERT SENDING LOGIC HERE. Again, this is just a UserControl, not a complete app. For the Ringcentral API, I was able to reduce this section
-            //        down to a single method.
-
-            //    */
-
-            //    if (chatModel != null)
-            //    {
-            //        AddMessage(chatModel);
-            //        CancelAttachment(null, null);
-            //    }
-            //    if (textModel != null)
-            //    {
-            //        AddMessage(textModel);
-            //        chatTextbox.Text = string.Empty;
-            //    }
-
-
-            //}
-            //catch (Exception exc)
-            //{
-            //    //If any exception is found, then it is printed on the screen. Feel free to change this method if you don't want people to see exceptions.
-            //    textModel = new TextChatModel()
-            //    {
-            //        Author = chatbox_info.User,
-            //        Body = "The message could not be processed. Please see the reason below.\r\n" + exc.Message,
-            //        Inbound = false,
-            //        Read = true,
-            //        Time = DateTime.Now
-            //    };
-            //    AddMessage(textModel);
-            //}
             _container.MessageService.SendMessage(chatbox_info.OtherUsername, chatmessage);
         }
 
@@ -244,11 +214,11 @@ namespace Local.Messages.Chat
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
-            foreach (var control in itemsPanel.Controls)
+            foreach (var control in itemsPanel2.Controls)
             {
                 if (control is ChatItem)
                 {
-                    (control as ChatItem).ResizeBubbles((int)(itemsPanel.Width * 0.6));
+                    (control as ChatItem).ResizeBubbles((int)(itemsPanel2.Width * 0.6));
                 }
             }
         }
