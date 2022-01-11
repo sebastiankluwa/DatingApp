@@ -1,7 +1,7 @@
 ﻿
 namespace DatingApp.App.Forms
 {
-    partial class MatchesForm
+    partial class ListsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -31,13 +31,8 @@ namespace DatingApp.App.Forms
         {
             this.filtersPanel = new System.Windows.Forms.Panel();
             this.filtersFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.lblAgeFrom = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.txtAgeFrom = new System.Windows.Forms.NumericUpDown();
-            this.lblAgeTo = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.txtAgeTo = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
             this.lblGender = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.btnGender = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
-            this.btnApplyFilters = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.btnPredicate = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
             this.sliderPanel = new System.Windows.Forms.Panel();
             this.lblKnownAs = new System.Windows.Forms.Label();
             this.btnMessage = new FontAwesome.Sharp.IconButton();
@@ -46,8 +41,7 @@ namespace DatingApp.App.Forms
             this.btnChangeNext = new FontAwesome.Sharp.IconButton();
             this.filtersPanel.SuspendLayout();
             this.filtersFlowPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtAgeFrom)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnGender)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnPredicate)).BeginInit();
             this.sliderPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,13 +56,8 @@ namespace DatingApp.App.Forms
             // 
             // filtersFlowPanel
             // 
-            this.filtersFlowPanel.Controls.Add(this.lblAgeFrom);
-            this.filtersFlowPanel.Controls.Add(this.txtAgeFrom);
-            this.filtersFlowPanel.Controls.Add(this.lblAgeTo);
-            this.filtersFlowPanel.Controls.Add(this.txtAgeTo);
             this.filtersFlowPanel.Controls.Add(this.lblGender);
-            this.filtersFlowPanel.Controls.Add(this.btnGender);
-            this.filtersFlowPanel.Controls.Add(this.btnApplyFilters);
+            this.filtersFlowPanel.Controls.Add(this.btnPredicate);
             this.filtersFlowPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.filtersFlowPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.filtersFlowPanel.Location = new System.Drawing.Point(0, 0);
@@ -76,74 +65,26 @@ namespace DatingApp.App.Forms
             this.filtersFlowPanel.Size = new System.Drawing.Size(107, 450);
             this.filtersFlowPanel.TabIndex = 0;
             // 
-            // lblAgeFrom
-            // 
-            this.lblAgeFrom.Location = new System.Drawing.Point(3, 3);
-            this.lblAgeFrom.Name = "lblAgeFrom";
-            this.lblAgeFrom.Size = new System.Drawing.Size(64, 20);
-            this.lblAgeFrom.TabIndex = 0;
-            this.lblAgeFrom.Values.Text = "Age from:";
-            // 
-            // txtAgeFrom
-            // 
-            this.txtAgeFrom.Location = new System.Drawing.Point(3, 29);
-            this.txtAgeFrom.Name = "txtAgeFrom";
-            this.txtAgeFrom.Size = new System.Drawing.Size(43, 23);
-            this.txtAgeFrom.TabIndex = 8;
-            this.txtAgeFrom.Value = new decimal(new int[] {
-            18,
-            0,
-            0,
-            0});
-            // 
-            // lblAgeTo
-            // 
-            this.lblAgeTo.Location = new System.Drawing.Point(3, 58);
-            this.lblAgeTo.Name = "lblAgeTo";
-            this.lblAgeTo.Size = new System.Drawing.Size(50, 20);
-            this.lblAgeTo.TabIndex = 2;
-            this.lblAgeTo.Values.Text = "Age to:";
-            // 
-            // txtAgeTo
-            // 
-            this.txtAgeTo.Location = new System.Drawing.Point(3, 84);
-            this.txtAgeTo.Name = "txtAgeTo";
-            this.txtAgeTo.Size = new System.Drawing.Size(43, 22);
-            this.txtAgeTo.TabIndex = 7;
-            this.txtAgeTo.Value = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-            // 
             // lblGender
             // 
-            this.lblGender.Location = new System.Drawing.Point(3, 112);
+            this.lblGender.Location = new System.Drawing.Point(3, 3);
             this.lblGender.Name = "lblGender";
             this.lblGender.Size = new System.Drawing.Size(43, 20);
             this.lblGender.TabIndex = 5;
             this.lblGender.Values.Text = "Show:";
             // 
-            // btnGender
+            // btnPredicate
             // 
-            this.btnGender.DropDownWidth = 90;
-            this.btnGender.Items.AddRange(new object[] {
-            "female",
-            "male"});
-            this.btnGender.Location = new System.Drawing.Point(3, 138);
-            this.btnGender.Name = "btnGender";
-            this.btnGender.Size = new System.Drawing.Size(90, 21);
-            this.btnGender.TabIndex = 9;
-            this.btnGender.Text = "female";
-            // 
-            // btnApplyFilters
-            // 
-            this.btnApplyFilters.Location = new System.Drawing.Point(3, 165);
-            this.btnApplyFilters.Name = "btnApplyFilters";
-            this.btnApplyFilters.Size = new System.Drawing.Size(90, 25);
-            this.btnApplyFilters.TabIndex = 6;
-            this.btnApplyFilters.Values.Text = "Apply Filters";
-            this.btnApplyFilters.Click += new System.EventHandler(this.ApplyFilters);
+            this.btnPredicate.DropDownWidth = 90;
+            this.btnPredicate.Items.AddRange(new object[] {
+            "Members I like",
+            "Members who like me"});
+            this.btnPredicate.Location = new System.Drawing.Point(3, 29);
+            this.btnPredicate.Name = "btnPredicate";
+            this.btnPredicate.Size = new System.Drawing.Size(104, 21);
+            this.btnPredicate.TabIndex = 9;
+            this.btnPredicate.Text = "Members I like";
+            this.btnPredicate.SelectedIndexChanged += new System.EventHandler(this.btnGender_SelectedIndexChanged);
             // 
             // sliderPanel
             // 
@@ -237,7 +178,7 @@ namespace DatingApp.App.Forms
             this.btnChangeNext.UseVisualStyleBackColor = true;
             this.btnChangeNext.Click += new System.EventHandler(this.SliderSlideNext);
             // 
-            // MatchesForm
+            // ListsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -249,8 +190,7 @@ namespace DatingApp.App.Forms
             this.filtersPanel.ResumeLayout(false);
             this.filtersFlowPanel.ResumeLayout(false);
             this.filtersFlowPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtAgeFrom)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnGender)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnPredicate)).EndInit();
             this.sliderPanel.ResumeLayout(false);
             this.sliderPanel.PerformLayout();
             this.ResumeLayout(false);
@@ -261,18 +201,13 @@ namespace DatingApp.App.Forms
 
         private System.Windows.Forms.Panel filtersPanel;
         private System.Windows.Forms.FlowLayoutPanel filtersFlowPanel;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel lblAgeFrom;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel lblAgeTo;
         private ComponentFactory.Krypton.Toolkit.KryptonLabel lblGender;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton btnApplyFilters;
         private System.Windows.Forms.Panel sliderPanel;
         private FontAwesome.Sharp.IconButton btnChangeBack;
         private FontAwesome.Sharp.IconButton btnChangeNext;
         private FontAwesome.Sharp.IconButton btnMessage;
         private FontAwesome.Sharp.IconButton btnLike;
-        private System.Windows.Forms.NumericUpDown txtAgeFrom;
-        private ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown txtAgeTo;
-        private ComponentFactory.Krypton.Toolkit.KryptonComboBox btnGender;
+        private ComponentFactory.Krypton.Toolkit.KryptonComboBox btnPredicate;
         private System.Windows.Forms.Label lblKnownAs;
     }
 }

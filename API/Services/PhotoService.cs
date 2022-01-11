@@ -1,3 +1,4 @@
+using System.IO;
 using System.Threading.Tasks;
 using API.Helpers;
 using API.Interfaces;
@@ -33,6 +34,25 @@ namespace API.Services
                 var uploadParams = new ImageUploadParams
                 {
                     File = new FileDescription(file.FileName, stream),
+                    Transformation = new Transformation().Height(500).Width(500).Crop("fill").Gravity("face")
+                };
+                uploadResult = await _cloudinary.UploadAsync(uploadParams);
+            }
+
+            return uploadResult;
+        }
+
+        public async Task<ImageUploadResult> AddPhotoAsync(string location)
+        {
+            var uploadResult = new ImageUploadResult();
+
+            var fileInfo = new FileInfo(location);
+            if (fileInfo.Length > 0)
+            {
+                using var stream = fileInfo.OpenRead();
+                var uploadParams = new ImageUploadParams
+                {
+                    File = new FileDescription(fileInfo.Name, stream),
                     Transformation = new Transformation().Height(500).Width(500).Crop("fill").Gravity("face")
                 };
                 uploadResult = await _cloudinary.UploadAsync(uploadParams);

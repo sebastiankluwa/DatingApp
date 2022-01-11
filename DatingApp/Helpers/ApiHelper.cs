@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Local.Helpers
 {
@@ -37,7 +38,7 @@ namespace Local.Helpers
         {
             using (var client = new HttpClient())
             {
-                if(accessToken != null)
+                if (accessToken != null)
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
                 var content = new StringContent(contentData, Encoding.UTF8, "application/json");
@@ -53,11 +54,13 @@ namespace Local.Helpers
             throw new Exception("Could not update the data.");
         }
 
-        #region unauthorized
-        public static async Task<string> Put(string name, string contentData)
+        public static async Task<string> Put(string name, string contentData, string accessToken = null)
         {
             using (var client = new HttpClient())
             {
+                if (accessToken != null)
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
                 var content = new StringContent(contentData, Encoding.UTF8, "application/json");
 
                 var responseData = await client.PutAsync(BaseUri + name, content);
@@ -74,10 +77,34 @@ namespace Local.Helpers
             }
         }
 
-        public static async Task<string> Delete(string name)
+        #region unauthorized
+        //public static async Task<string> Put(string name, string contentData)
+        //{
+        //    using (var client = new HttpClient())
+        //    {
+        //        var content = new StringContent(contentData, Encoding.UTF8, "application/json");
+
+        //        var responseData = await client.PutAsync(BaseUri + name, content);
+
+        //        if (responseData.IsSuccessStatusCode)
+        //        {
+        //            var results = await responseData.Content.ReadAsByteArrayAsync();
+        //            return Encoding.UTF8.GetString(results);
+        //        }
+        //        else
+        //        {
+        //            return responseData.StatusCode.ToString();
+        //        }
+        //    }
+        //}
+
+        public static async Task<string> Delete(string name, string accessToken = null)
         {
             using (var client = new HttpClient())
             {
+                if (accessToken != null)
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
                 var responseData = await client.DeleteAsync(BaseUri + name);
 
                 if (responseData.IsSuccessStatusCode)

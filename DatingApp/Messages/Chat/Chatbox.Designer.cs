@@ -36,11 +36,11 @@ namespace Local.Messages.Chat
             this.clientnameLabel = new System.Windows.Forms.Label();
             this.bottomPanel = new System.Windows.Forms.Panel();
             this.chatTextbox = new System.Windows.Forms.TextBox();
-            this.attachButton = new System.Windows.Forms.Button();
-            this.removeButton = new System.Windows.Forms.Button();
             this.sendButton = new System.Windows.Forms.Button();
             this.itemsPanel2 = new System.Windows.Forms.Panel();
             this.itemsPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.removeButton = new System.Windows.Forms.Button();
+            this.attachButton = new System.Windows.Forms.Button();
             this.topPanel.SuspendLayout();
             this.bottomPanel.SuspendLayout();
             this.itemsPanel2.SuspendLayout();
@@ -127,39 +127,6 @@ namespace Local.Messages.Chat
             this.chatTextbox.Size = new System.Drawing.Size(292, 38);
             this.chatTextbox.TabIndex = 7;
             // 
-            // attachButton
-            // 
-            this.attachButton.BackColor = System.Drawing.Color.GhostWhite;
-            this.attachButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("attachButton.BackgroundImage")));
-            this.attachButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.attachButton.Dock = System.Windows.Forms.DockStyle.Right;
-            this.attachButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.attachButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.attachButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.attachButton.Location = new System.Drawing.Point(310, 12);
-            this.attachButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.attachButton.Name = "attachButton";
-            this.attachButton.Size = new System.Drawing.Size(41, 38);
-            this.attachButton.TabIndex = 6;
-            this.attachButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.attachButton.UseVisualStyleBackColor = false;
-            // 
-            // removeButton
-            // 
-            this.removeButton.BackColor = System.Drawing.Color.Red;
-            this.removeButton.Dock = System.Windows.Forms.DockStyle.Right;
-            this.removeButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.removeButton.Font = new System.Drawing.Font("Segoe UI Symbol", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.removeButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.removeButton.Location = new System.Drawing.Point(351, 12);
-            this.removeButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.removeButton.Name = "removeButton";
-            this.removeButton.Size = new System.Drawing.Size(22, 38);
-            this.removeButton.TabIndex = 5;
-            this.removeButton.Text = "X";
-            this.removeButton.UseVisualStyleBackColor = false;
-            this.removeButton.Visible = false;
-            // 
             // sendButton
             // 
             this.sendButton.BackColor = System.Drawing.Color.RoyalBlue;
@@ -195,6 +162,40 @@ namespace Local.Messages.Chat
             this.itemsPanel.Size = new System.Drawing.Size(479, 544);
             this.itemsPanel.TabIndex = 0;
             this.itemsPanel.WrapContents = false;
+            // 
+            // removeButton
+            // 
+            this.removeButton.BackColor = System.Drawing.Color.Red;
+            this.removeButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.removeButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.removeButton.Font = new System.Drawing.Font("Segoe UI Symbol", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.removeButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.removeButton.Location = new System.Drawing.Point(351, 12);
+            this.removeButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.removeButton.Name = "removeButton";
+            this.removeButton.Size = new System.Drawing.Size(22, 38);
+            this.removeButton.TabIndex = 5;
+            this.removeButton.Text = "X";
+            this.removeButton.UseVisualStyleBackColor = false;
+            this.removeButton.Visible = false;
+            // 
+            // attachButton
+            // 
+            this.attachButton.BackColor = System.Drawing.Color.GhostWhite;
+            this.attachButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("attachButton.BackgroundImage")));
+            this.attachButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.attachButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.attachButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.attachButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.attachButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.attachButton.Location = new System.Drawing.Point(310, 12);
+            this.attachButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.attachButton.Name = "attachButton";
+            this.attachButton.Size = new System.Drawing.Size(41, 38);
+            this.attachButton.TabIndex = 6;
+            this.attachButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.attachButton.UseVisualStyleBackColor = false;
+            this.attachButton.Visible = false;
             // 
             // Chatbox
             // 

@@ -15,6 +15,7 @@ namespace Local.Managers
     public interface IMessagesManager
     {
         Task<List<MessageDto>> GetMessagesForUser(string userName, int pageNumber = 1, int pageSize = 10, string container = "Inbox");
+        Task DeleteMessage(int id);
     }
 
     public class MessagesManager : IMessagesManager
@@ -29,9 +30,9 @@ namespace Local.Managers
         public async Task<List<MessageDto>> GetMessagesForUser(string userName, int pageNumber = 1, int pageSize = 10, string container = "Inbox")
         {
             var param = new Dictionary<string, string>() { { "Username", userName },
-                                                           { "PageNumber", pageNumber.ToString() },
-                                                           { "PageSize", pageSize.ToString() },
-                                                           { "Container", container }};
+                { "PageNumber", pageNumber.ToString() },
+                { "PageSize", pageSize.ToString() },
+                { "Container", container }};
 
             var uri = QueryHelpers.AddQueryString(Constants.Api.DefaultRoutePaths.Messages, param);
             var jsonResult = await ApiHelper.Get(uri, _container.AccountManager.User.Token);
@@ -41,7 +42,11 @@ namespace Local.Managers
             return messages;
         }
 
-        
+        public async Task DeleteMessage(int id)
+        {
+            var url = Constants.Api.DefaultRoutePaths.Messages + "/" + id;
+            var jsonResult = await ApiHelper.Delete(url, _container.AccountManager.User.Token);
+        }
 
     }
 }

@@ -47,6 +47,7 @@ namespace DatingApp
             _container.MessagesManager = new MessagesManager(_container);
             _container.MessageService = new MessageService(_container);
             _container.UsersManager = new UsersManager(_container);
+            _container.LikesManager = new LikesManager(_container);
 
             //Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 25, 25));
             leftBorderBtn = new Panel();
@@ -112,6 +113,15 @@ namespace DatingApp
             lblUserName.Text = _container.AccountManager.User.KnownAs;
         }
 
+        public void EnterChatWith(string username)
+        {
+            var messagesForm = new MessagesForm(_container);
+            ActivateButton(btnMessages, RGBColors.color3);
+            OpenChildForm(messagesForm);
+
+            messagesForm.EnterChatWith(username);
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             LoginUser();
@@ -165,7 +175,7 @@ namespace DatingApp
                 currentBtn.ImageAlign = ContentAlignment.MiddleLeft;
             }
         }
-        
+
         private void OpenChildForm(Form childForm)
         {
             //open only form
@@ -205,12 +215,17 @@ namespace DatingApp
 
         private void btnMatches_Click(object sender, EventArgs e)
         {
+            var matchesForm = new MatchesForm(_container, this);
             ActivateButton(sender, RGBColors.color6);
+            OpenChildForm(matchesForm);
+
         }
 
         private void btnLists_Click(object sender, EventArgs e)
         {
+            var matchesForm = new ListsForm(_container, this);
             ActivateButton(sender, RGBColors.color2);
+            OpenChildForm(matchesForm);
 
         }
 

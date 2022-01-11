@@ -100,8 +100,11 @@ namespace Local.Messages.Chat
             foreach (var message in messages.Select((value, i) => (value, i)))
             {
                 var controlName = "chatItem" + message.value.Id;
-                var control = controls.Find(controlName, true).First();
-                controls.SetChildIndex(control, message.i);
+                if (controls.ContainsKey(controlName))
+                {
+                    var control = controls.Find(controlName, true).First();
+                    controls.SetChildIndex(control, message.i);
+                }
             }
         }
 

@@ -41,12 +41,32 @@ namespace DatingApp.App.Forms
             _container.MessageService.MessageThread.CollectionChanged += updateMessageThread;
         }
 
+        public void EnterChatWith(string username)
+        {
+            if (_container.MessageService.IsConnectionToMessageHub())
+            {
+                _container.MessageService.DisconnectFromMessageHub();
+                panelMessageChat.Controls.Clear();
+            }
+
+            _container.MessageService.ConnectToMessageHub(username);
+            initializeChatBox(username);
+        }
+
         private async void updateMessageThread(object sender, NotifyCollectionChangedEventArgs e)
         {
             var user = _container.AccountManager.User;
 
             if (e.NewItems != null)
             {
+                if (_chatBox == null)
+                {
+                    var mess = ((MessageDto)e.NewItems[0]);
+                    var otherUsername = mess.SenderUsername != user.Username
+                        ? mess.SenderUsername
+                        : mess.RecipientUsername;
+                    initializeChatBox(otherUsername);
+                }
                 foreach (MessageDto message in e.NewItems)
                 {
                     var otherUsername = message.RecipientUsername == user.Username
@@ -221,12 +241,15 @@ namespace DatingApp.App.Forms
 
         private void SortControlsByOrderedMessageList(Control.ControlCollection controls)
         {
-            var messages = MessageInboxOutbox.OrderBy(x => x.MessageSent).ToList();
+            var messages = MessageInboxOutbox.OrderByDescending(x => x.MessageSent).ToList();
             foreach (var message in messages.Select((value, i) => (value, i)))
             {
                 var controlName = "bubbleItem" + message.value.Id;
-                var control = controls.Find(controlName, true).First();
-                controls.SetChildIndex(control, message.i);
+                if (controls.ContainsKey(controlName))
+                {
+                    var control = controls.Find(controlName, true).First();
+                    controls.SetChildIndex(control, message.i);
+                }
             }
         }
 
