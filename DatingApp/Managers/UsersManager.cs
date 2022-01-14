@@ -3,11 +3,16 @@ using Local.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using API.Controllers;
+using API.DTOs;
 using Microsoft.AspNetCore.Http;
+using MemberDto = Local.DTOs.MemberDto;
+using MemberUpdateDto = API.DTOs.MemberUpdateDto;
 
 namespace Local.Managers
 {
@@ -35,6 +40,9 @@ namespace Local.Managers
             var url = Constants.Api.DefaultRoutePaths.Users + "/" + username;
             var jsonResult = await ApiHelper.Get(url, _container.AccountManager.User.Token);
             var memberDto = JsonConvert.DeserializeObject<MemberDto>(jsonResult);
+
+            var approvedPhotos = memberDto.Photos.Where(x => x.IsApproved).ToList();
+            memberDto.Photos = approvedPhotos;
 
             return memberDto;
         }
@@ -66,9 +74,12 @@ namespace Local.Managers
 
         public async Task<PhotoDto> AddPhoto(string location)
         {
-            var url = Constants.Api.DefaultRoutePaths.AddPhoto;
+            //var url = Constants.Api.DefaultRoutePaths.AddPhoto + "?location=" + location;
+            var locationQuery = HttpUtility.UrlEncode(location);
 
-            var jsonResult = await ApiHelper.Post(url + "/" + location, "", _container.AccountManager.User.Token);
+            var path = Constants.Api.DefaultRoutePaths.AddPhoto + "/" + locationQuery;
+
+            var jsonResult = await ApiHelper.Post(path, "", _container.AccountManager.User.Token);
 
             var photoDto = JsonConvert.DeserializeObject<PhotoDto>(jsonResult);
 
@@ -84,7 +95,7 @@ namespace Local.Managers
 
         public async Task DeletePhoto(int photoId)
         {
-            var url = Constants.Api.DefaultRoutePaths.SetMainPhoto;
+            var url = Constants.Api.DefaultRoutePaths.DeletePhoto;
 
             var jsonResult = await ApiHelper.Delete(url + "/" + photoId, _container.AccountManager.User.Token);
         }

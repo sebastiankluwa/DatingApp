@@ -36,6 +36,11 @@ namespace DatingApp.App.Forms
             MessagesList = new ObservableCollection<MessageDto>();
             MessagesList.CollectionChanged += updateView;
             InitializeComponent();
+
+            panelMessageList.Visible = true;
+            lblNoMessages.Visible = false;
+            iconChatMessages.Visible = false;
+
             connectToInboxMessagesHub();
             this.FormClosing += MessagesForm_Closing;
             _container.MessageService.MessageThread.CollectionChanged += updateMessageThread;
@@ -65,7 +70,7 @@ namespace DatingApp.App.Forms
                     var otherUsername = mess.SenderUsername != user.Username
                         ? mess.SenderUsername
                         : mess.RecipientUsername;
-                    initializeChatBox(otherUsername);
+                    await initializeChatBox(otherUsername);
                 }
                 foreach (MessageDto message in e.NewItems)
                 {
@@ -97,7 +102,7 @@ namespace DatingApp.App.Forms
             }
         }
 
-        private async void initializeChatBox(string userName)
+        private async Task initializeChatBox(string userName)
         {
             var sender = await _container.UsersManager.GetUserByUsername(userName);
 
@@ -197,7 +202,7 @@ namespace DatingApp.App.Forms
                         }
                     }
 
-                    var bubbleList = new BubbleList(otherUsername, otherUser.KnownAs, message.Content, message.MessageSent, message);
+                    var bubbleList = new BubbleList(otherUser, otherUsername, otherUser.KnownAs, message.Content, message.MessageSent, message);
                     bubbleList.Name = "bubbleItem" + message.Id;
                     bubbleList.DefaultBackColor = flowMessageList.BackColor;
                     bubbleList.Width = flowMessageList.Width;
@@ -234,9 +239,7 @@ namespace DatingApp.App.Forms
             //if (isAnyMessage())
             //    await loadInboxMessagesList();
 
-            panelMessageList.Visible = true;
-            lblNoMessages.Visible = false;
-            iconChatMessages.Visible = false;
+            
         }
 
         private void SortControlsByOrderedMessageList(Control.ControlCollection controls)

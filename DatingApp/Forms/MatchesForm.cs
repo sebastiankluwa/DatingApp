@@ -38,9 +38,22 @@ namespace DatingApp.App.Forms
 
         private async void LoadData()
         {
+            var shouldBeDisappeared = true;
             var users = await GetUsers();
             Matches = users;
-            ChangeSliderSelection(users?.First());
+
+            if (Matches.Any())
+            {
+                ChangeSliderSelection(users?.First());
+                shouldBeDisappeared = false;
+            }
+
+            DisappearPanel(shouldBeDisappeared);
+        }
+
+        private void DisappearPanel(bool shouldBeDisappeared)
+        {
+            sliderPanel.Visible = !shouldBeDisappeared;
         }
 
         private void ChangeSliderSelection(MemberDto memberDto)
@@ -97,6 +110,8 @@ namespace DatingApp.App.Forms
 
         private async void ApplyFilters(object sender, EventArgs e)
         {
+            var shouldBeDisappeared = true;
+
             var userParams = new UserParams()
             {
                 Gender = (string)btnGender.SelectedItem,
@@ -105,33 +120,46 @@ namespace DatingApp.App.Forms
             };
 
             Matches = await _container.UsersManager.GetUsers(userParams);
-            ChangeSliderSelection(Matches?.FirstOrDefault());
+
+            if (Matches.Any())
+            {
+                ChangeSliderSelection(Matches?.FirstOrDefault());
+                shouldBeDisappeared = false;
+            }
+
+            DisappearPanel(shouldBeDisappeared);
         }
 
         private void SliderSlideNext(object sender, EventArgs e)
         {
-            var oldIndex = Matches.IndexOf(_selectedMemberDto);
-            var maxIndex = Matches.Count - 1;
-            var newIndex = 0;
+            if (Matches != null && Matches.Any())
+            {
+                var oldIndex = Matches.IndexOf(_selectedMemberDto);
+                var maxIndex = Matches.Count - 1;
+                var newIndex = 0;
 
-            if (oldIndex + 1 <= maxIndex)
-                newIndex = oldIndex + 1;
+                if (oldIndex + 1 <= maxIndex)
+                    newIndex = oldIndex + 1;
 
-            var newSelection = Matches[newIndex];
-            ChangeSliderSelection(newSelection);
+                var newSelection = Matches[newIndex];
+                ChangeSliderSelection(newSelection);
+            }
         }
 
         private void SliderSlideBack(object sender, EventArgs e)
         {
-            var oldIndex = Matches.IndexOf(_selectedMemberDto);
-            var maxIndex = Matches.Count - 1;
-            var newIndex = maxIndex;
+            if (Matches != null && Matches.Any())
+            {
+                var oldIndex = Matches.IndexOf(_selectedMemberDto);
+                var maxIndex = Matches.Count - 1;
+                var newIndex = maxIndex;
 
-            if (oldIndex - 1 >= 0)
-                newIndex = oldIndex - 1;
+                if (oldIndex - 1 >= 0)
+                    newIndex = oldIndex - 1;
 
-            var newSelection = Matches[newIndex];
-            ChangeSliderSelection(newSelection);
+                var newSelection = Matches[newIndex];
+                ChangeSliderSelection(newSelection);
+            }
         }
     }
 }

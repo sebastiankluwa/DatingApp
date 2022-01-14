@@ -5,10 +5,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Local.DTOs;
+using Local.Properties;
 
 namespace DatingApp.App.Messages
 {
@@ -39,7 +43,7 @@ namespace DatingApp.App.Messages
             InitializeComponent();
         }
 
-        public BubbleList(string username, string knownAs, string message, DateTime dateSent, MessageDto? messageDto)
+        public BubbleList(MemberDto user, string username, string knownAs, string message, DateTime dateSent, MessageDto? messageDto)
         {
             InitializeComponent();
             Username = username;
@@ -47,7 +51,22 @@ namespace DatingApp.App.Messages
             lblText.Text = message;
             Message = message;
             lblTimeSent.Text = dateSent.ToString("hh:mm tt");
+
+            userPicture.Image = string.IsNullOrEmpty(user.PhotoUrl)
+                ? userPicture.Image = Resources.avatar
+                : GetImage(user.PhotoUrl);
+            
             MessageDto = messageDto;
+        }
+
+        private Image GetImage(string photoUrl)
+        {
+            WebClient wc = new WebClient();
+            byte[] bytes = wc.DownloadData(photoUrl);
+            MemoryStream ms = new MemoryStream(bytes);
+            Image img = Image.FromStream(ms);
+
+            return img;
         }
 
         private void BubbleListMouseLeave(object sender, EventArgs e)

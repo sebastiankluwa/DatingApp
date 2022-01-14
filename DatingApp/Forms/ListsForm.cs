@@ -42,9 +42,20 @@ namespace DatingApp.App.Forms
         {
             var likes = await GetLikes();
             Likes = likes;
+            var shouldBeDisappeared = true;
 
             if (likes.Count > 0)
+            {
                 ChangeSliderSelection(likes.First());
+                shouldBeDisappeared = false;
+            }
+
+            DisappearPanel(shouldBeDisappeared);
+        }
+
+        private void DisappearPanel(bool shouldBeDisappeared)
+        {
+            sliderPanel.Visible = !shouldBeDisappeared;
         }
 
         private void ChangeSliderSelection(LikeDto likeDto)
@@ -98,28 +109,34 @@ namespace DatingApp.App.Forms
 
         private void SliderSlideNext(object sender, EventArgs e)
         {
-            var oldIndex = Likes.IndexOf(_selectedLikeDto);
-            var maxIndex = Likes.Count - 1;
-            var newIndex = 0;
+            if (Likes != null && Likes.Any())
+            {
+                var oldIndex = Likes.IndexOf(_selectedLikeDto);
+                var maxIndex = Likes.Count - 1;
+                var newIndex = 0;
 
-            if (oldIndex + 1 <= maxIndex)
-                newIndex = oldIndex + 1;
+                if (oldIndex + 1 <= maxIndex)
+                    newIndex = oldIndex + 1;
 
-            var newSelection = Likes[newIndex];
-            ChangeSliderSelection(newSelection);
+                var newSelection = Likes[newIndex];
+                ChangeSliderSelection(newSelection);
+            }
         }
 
         private void SliderSlideBack(object sender, EventArgs e)
         {
-            var oldIndex = Likes.IndexOf(_selectedLikeDto);
-            var maxIndex = Likes.Count - 1;
-            var newIndex = maxIndex;
+            if (Likes != null && Likes.Any())
+            {
+                var oldIndex = Likes.IndexOf(_selectedLikeDto);
+                var maxIndex = Likes.Count - 1;
+                var newIndex = maxIndex;
 
-            if (oldIndex - 1 >= 0)
-                newIndex = oldIndex - 1;
+                if (oldIndex - 1 >= 0)
+                    newIndex = oldIndex - 1;
 
-            var newSelection = Likes[newIndex];
-            ChangeSliderSelection(newSelection);
+                var newSelection = Likes[newIndex];
+                ChangeSliderSelection(newSelection);
+            }
         }
 
         private void btnGender_SelectedIndexChanged(object sender, EventArgs e)

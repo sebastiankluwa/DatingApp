@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using API.DTOs;
 
 namespace Local.DTOs
 {

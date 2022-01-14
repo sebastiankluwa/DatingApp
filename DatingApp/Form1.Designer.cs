@@ -31,6 +31,7 @@ namespace DatingApp
         {
             this.button1 = new System.Windows.Forms.Button();
             this.panelMenu = new System.Windows.Forms.Panel();
+            this.btnPhotos = new FontAwesome.Sharp.IconButton();
             this.logoutButton = new FontAwesome.Sharp.IconButton();
             this.btnProfile = new FontAwesome.Sharp.IconButton();
             this.btnMessages = new FontAwesome.Sharp.IconButton();
@@ -79,6 +80,7 @@ namespace DatingApp
             // panelMenu
             // 
             this.panelMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(9)))), ((int)(((byte)(132)))), ((int)(((byte)(70)))));
+            this.panelMenu.Controls.Add(this.btnPhotos);
             this.panelMenu.Controls.Add(this.logoutButton);
             this.panelMenu.Controls.Add(this.btnProfile);
             this.panelMenu.Controls.Add(this.btnMessages);
@@ -90,6 +92,29 @@ namespace DatingApp
             this.panelMenu.Name = "panelMenu";
             this.panelMenu.Size = new System.Drawing.Size(220, 611);
             this.panelMenu.TabIndex = 1;
+            // 
+            // btnPhotos
+            // 
+            this.btnPhotos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnPhotos.FlatAppearance.BorderSize = 0;
+            this.btnPhotos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPhotos.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnPhotos.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnPhotos.IconChar = FontAwesome.Sharp.IconChar.Images;
+            this.btnPhotos.IconColor = System.Drawing.Color.White;
+            this.btnPhotos.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnPhotos.IconSize = 32;
+            this.btnPhotos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnPhotos.Location = new System.Drawing.Point(0, 364);
+            this.btnPhotos.Name = "btnPhotos";
+            this.btnPhotos.Padding = new System.Windows.Forms.Padding(10, 0, 20, 0);
+            this.btnPhotos.Size = new System.Drawing.Size(220, 60);
+            this.btnPhotos.TabIndex = 6;
+            this.btnPhotos.Text = "Photos";
+            this.btnPhotos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnPhotos.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnPhotos.UseVisualStyleBackColor = true;
+            this.btnPhotos.Click += new System.EventHandler(this.btnPhotos_Click);
             // 
             // logoutButton
             // 
@@ -461,6 +486,7 @@ namespace DatingApp
         private FontAwesome.Sharp.IconButton btnProfile;
         private FontAwesome.Sharp.IconButton iconButton1;
         private FontAwesome.Sharp.IconButton logoutButton;
+        private FontAwesome.Sharp.IconButton btnPhotos;
     }
 }
 

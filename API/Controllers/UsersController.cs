@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using API.Data;
 using API.DTOs;
 using API.Entities;
@@ -50,7 +51,10 @@ namespace API.Controllers
         [HttpGet("{username}", Name = "GetUser")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
-            return await _unitOfWork.UserRepository.GetMemberAsync(username);
+            var currentUsername = User.GetUsername();
+            return await _unitOfWork.UserRepository.GetMemberAsync(username,
+                isCurrentUser: currentUsername == username
+            );
         }
 
         [HttpPut]
@@ -83,11 +87,6 @@ namespace API.Controllers
                 PublicId = result.PublicId
             };
 
-            if (user.Photos.Count == 0)
-            {
-                photo.IsMain = true;
-            }
-
             user.Photos.Add(photo);
 
             if (await _unitOfWork.Complete())
@@ -102,9 +101,10 @@ namespace API.Controllers
         [HttpPost("add-photo/{location}")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(string location)
         {
+            var locationDecoded = HttpUtility.UrlDecode(location);
             var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
 
-            var result = await _photoService.AddPhotoAsync(location);
+            var result = await _photoService.AddPhotoAsync(locationDecoded);
 
             if (result.Error != null) return BadRequest(result.Error.Message);
 
@@ -114,18 +114,12 @@ namespace API.Controllers
                 PublicId = result.PublicId
             };
 
-            if (user.Photos.Count == 0)
-            {
-                photo.IsMain = true;
-            }
-
             user.Photos.Add(photo);
 
             if (await _unitOfWork.Complete())
             {
                 return CreatedAtRoute("GetUser", new { username = user.UserName }, _mapper.Map<PhotoDto>(photo));
             }
-
 
             return BadRequest("Problem addding photo");
         }

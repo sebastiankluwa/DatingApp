@@ -9,6 +9,15 @@
     border-bottom: 4px solid #fbcdcf;
   }
   
+  .bg-primary{
+    background-color: #098446 !important;
+  }
+
+  .btn-primary{
+    background-color: #098446 !important;
+    border-color: #098446 !important;
+  }
+
   .member-tabset > .nav-tabs > li.open > a, .member-tabset > .nav-tabs > li:hover > a {
     border: 0;
     background: none !important;

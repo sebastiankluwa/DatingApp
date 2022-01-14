@@ -21,6 +21,7 @@ namespace Local
                 public const string AddPhoto = "/users/add-photo";
                 public const string Likes = "/likes";
                 public const string SetMainPhoto = "/users/set-main-photo";
+                public const string DeletePhoto = "/users/delete-photo";
                 public const string Messages = "/messages";
             }
 

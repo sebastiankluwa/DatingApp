@@ -147,7 +147,6 @@ namespace DatingApp.App.Forms
             // 
             // sliderPanel
             // 
-            this.sliderPanel.BackgroundImage = global::Local.Properties.Resources.avatar;
             this.sliderPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.sliderPanel.Controls.Add(this.lblKnownAs);
             this.sliderPanel.Controls.Add(this.btnMessage);
@@ -169,9 +168,8 @@ namespace DatingApp.App.Forms
             this.lblKnownAs.ForeColor = System.Drawing.Color.DarkOliveGreen;
             this.lblKnownAs.Location = new System.Drawing.Point(310, 362);
             this.lblKnownAs.Name = "lblKnownAs";
-            this.lblKnownAs.Size = new System.Drawing.Size(67, 25);
+            this.lblKnownAs.Size = new System.Drawing.Size(0, 25);
             this.lblKnownAs.TabIndex = 6;
-            this.lblKnownAs.Text = "label1";
             // 
             // btnMessage
             // 
@@ -244,7 +242,7 @@ namespace DatingApp.App.Forms
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.sliderPanel);
             this.Controls.Add(this.filtersPanel);
-            this.Name = "ListsForm";
+            this.Name = "MatchesForm";
             this.Text = "MatchesForm";
             this.filtersPanel.ResumeLayout(false);
             this.filtersFlowPanel.ResumeLayout(false);

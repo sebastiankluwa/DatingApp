@@ -12,11 +12,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Local.Properties;
 
 namespace DatingApp
 {
@@ -110,7 +113,22 @@ namespace DatingApp
                 }
             }
 
-            lblUserName.Text = _container.AccountManager.User.KnownAs;
+            var user = _container.AccountManager.User;
+            lblUserName.Text = user.KnownAs;
+
+            userPicture.Image = string.IsNullOrEmpty(user.PhotoUrl)
+                ? userPicture.Image = Resources.avatar
+                : GetImage(user.PhotoUrl);
+        }
+
+        private Image GetImage(string photoUrl)
+        {
+            WebClient wc = new WebClient();
+            byte[] bytes = wc.DownloadData(photoUrl);
+            MemoryStream ms = new MemoryStream(bytes);
+            Image img = Image.FromStream(ms);
+
+            return img;
         }
 
         public void EnterChatWith(string username)
@@ -238,6 +256,8 @@ namespace DatingApp
 
         private void btnProfile_Click(object sender, EventArgs e)
         {
+            var profileForm = new ProfileForm(_container);
+            OpenChildForm(profileForm);
             ActivateButton(sender, RGBColors.color1);
         }
 
@@ -293,6 +313,13 @@ namespace DatingApp
             _container.AccountManager.LogOut();
             this.LoginUser();
             plexiglass.Close();
+        }
+
+        private void btnPhotos_Click(object sender, EventArgs e)
+        {
+            var photosForm = new PhotosForm(_container);
+            OpenChildForm(photosForm);
+            ActivateButton(sender, RGBColors.color1);
         }
     }
 }
