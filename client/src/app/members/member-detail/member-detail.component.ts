@@ -68,22 +68,22 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   }
 
   loadMessages() {
-    this.messageService.getMessageThread(this.member.username).subscribe(messages => {
-      this.messages = messages;
-    })
+    // this.messageService.getMessageThread(this.member.username).subscribe(messages => {
+    //   this.messages = messages;
+    // })
   }
 
   selectTab(tabId: number) {
-    this.memberTabs.tabs[tabId].active = true;
+    // this.memberTabs.tabs[tabId].active = true;
   }
 
   onTabActivated(data: TabDirective) {
-    this.activeTab = data;
-    if (this.activeTab.heading === 'Messages' && this.messages.length === 0) {
-      this.messageService.createHubConnection(this.user, this.member.username);
-    } else {
-      this.messageService.stopHubConnection();
-    }
+    // this.activeTab = data;
+    // if (this.activeTab.heading === 'Messages' && this.messages.length === 0) {
+    //   this.messageService.createHubConnection(this.user, this.member.username);
+    // } else {
+    //   this.messageService.stopHubConnection();
+    // }
   }
 
   ngOnDestroy(): void {
